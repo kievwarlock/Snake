@@ -1,52 +1,63 @@
-html{
-}
 body {text-align: center;}
-.main-block {margin: 50px auto;text-align: center;display: inline-block;}
-.game-item {
-
+.clear {
+  clear:both;
 }
-.new-game {display: inline-block;background: #73DA73;color: #fff;font-weight: bold;padding: 10px;border-radius: 5px;margin: 10px;cursor: pointer;}
+.main-block {
+  margin: 50px auto;
+  text-align: center;
+  display: inline-block;
+}
+.new-game {
+  display: inline-block;
+  background: #73DA73;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
+}
 .score {display: block;font-size: 50px;}
 .field-item {
-	width:20px;
-	height:20px;
-	float:left;
-	margin:1px;
-	border:1px solid #ccc;
-	border-radius:3px;
-	-webkit-transition: all 70ms ease-in-out;
-	-moz-transition: all 70ms ease-in-out;
-	-o-transition: all 70ms ease-in-out;
-	transition: all 70ms ease-in-out;
-}
-.clear {
-	clear:both;
+  width:20px;
+  height:20px;
+  float:left;
+  margin:1px;
+  border:1px solid #ccc;
+  border-radius:3px;
+  -webkit-transition: all 70ms ease-in-out;
+     -moz-transition: all 70ms ease-in-out;
+       -o-transition: all 70ms ease-in-out;
+          transition: all 70ms ease-in-out;
 }
 .snake-item {
-	background:#ccc;
+  background:#ccc;
 }
 .snake-food {
-	background: #73DA73;
+  background: #73DA73;
 }
 .item-row {
-	overflow:hidden;
+  overflow:hidden;
 }
-
 .main-block-nav {
-overflow:hidden;width: 400px;border: 1px solid #ccc;margin: 0 auto;border-radius: 10px;box-shadow: 0px 0px 5px 0px #ccc;}
+  overflow:hidden;
+  width: 400px;
+  border: 1px solid #ccc;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 0px #ccc;
+}
 .move-left {
-	border-radius:4px;
-	border:1px solid #ccc;
-	margin:5px;
-	float:left;
-	padding:10px;
-	
-	
+  border-radius:4px;
+  border:1px solid #ccc;
+  margin:5px;
+  float:left;
+  padding:10px;
 }
 .move-down {
-	border-radius:4px;
-	border:1px solid #ccc;
-	margin:5px;
-	float:left;
-	padding:10px;
+  border-radius:4px;
+  border:1px solid #ccc;
+  margin:5px;
+  float:left;
+  padding:10px;
 }
