@@ -1,123 +1,219 @@
 $(function() {
-
- 
-
-	function newGame (levelX, levelY) {		
-		var lvl = levelX * levelY;
-		var strDom = '';
-		var domArray = [];
-		
+	var SnakeCount = 4;
+	var SnakeCountFieldX = 20;
+	var SnakeCountFieldY = 20;	
+	var SnakeLoop;
+	
+	function AddSnakeField ( classField, x, y){
+		var lvl = x*y;
+		var cntY = 1;
+		var cntX = 1;
+		var str = '<div class="item-row" >';
 		for ( var i = 1 ; i <= lvl; i++ ) {	
-			domArray.push(i);
+			str += '<div class="field-item item-' + cntX + '-' + cntY + '" ></div>';
+			if( cntY == x){
+				cntX++;
+			}
+			if( cntY == y){
+				str += '</div><div class="item-row">';
+				cntY = 0;
+			}
+			if( cntY == x){
+				cntX++;
+			}
+			cntY++;
+			
 		}
-		shuffleArray(domArray);
-		
-		var cnt = 1;
-		$.each( domArray , function( index, value ) {
-			if(cnt == levelX) {
-				strDom += '<div class="game-item" data-number=' + value + '>' + value + '</div><div class="clear"></div>';
-				cnt = 1;
-			}else{
-				strDom += '<div class="game-item" data-number=' + value + '>' + value + '</div>';
-				cnt++;
-			}
-			
-		});
+		str += '</div>';
+		$(classField).html(str);
+	}
 
-		$(".game-container-block").html(strDom);	
-		var CurrentNumber = 1;
-		
-		$('.game-item').on('click', function(){
-			console.log(CurrentNumber);
-			var NumberItem = $(this).data('number');
-			
-			if(CurrentNumber == NumberItem){
-				if( CurrentNumber == lvl ){
-					timerStop();
-					$('.game-item').off();
-				}
-				$(this).addClass('success');
-				CurrentNumber++;
-			}else{
-				$(this).addClass('error');
-				timerStop();
-				$('.game-item').off();
+	
+	function CreateSnake (SnakeWidth){
+		$('.field-item').removeClass('snake-item');
+		var Snakelength = SnakeWidth;
+		var widthCnt = 1;
+		$('.field-item').each(function(){			
+			$(this).attr('data-cnt', widthCnt);
+			$(this).addClass('snake-item');
+			if( widthCnt == Snakelength ){
+				$(this).addClass('head ');
+				return false;
 			}
-			
-				
+			widthCnt++;
 		})
-	} 
-	
-	
-	
-	
-	
-	function shuffleArray(array) {
-		for (var i = array.length - 1; i > 0; i--) {
-			var j = Math.floor(Math.random() * (i + 1));
-			var temp = array[i];
-			array[i] = array[j];
-			array[j] = temp;
-		}
-		return array;
+		
 	}
 	
-	var timerVal;
-	function timer(classTimer){
-		clearInterval(timerVal);
-		var time_min = '';
-		var time_sec = '';
-		var time_ms = '';	
+	function CreateFood (){
+		$('.field-item').removeClass('snake-food');
+		var FieldsElement = $('.field-item').not('.snake-item');
+		var FoodDandom = Math.floor((Math.random() * FieldsElement.length) + 1);		
+		FieldsElement.eq( FoodDandom ).addClass('snake-food');
+	}
+	
+	
+	function SnakeStart(speed) {
+		clearInterval(SnakeLoop);
+		var SnakeSpeed = speed;		
+
+		var snakeLengthAll = $('.snake-item.head').data('cnt');
 		
-		$(classTimer).html( '<span class="timer-min">0min</span><span class="timer-sec">0sec</span><span class="timer-ms">0ms</span>' );	
+		var	x = 1;
+		var y = SnakeCount;
+		var SnakeSelector;
+	
+		var opr = '';
+		var opr_old = '';
 		
-		timerVal = setInterval(function(){		
+		$(document).keydown(function (e) {
+				switch( e.which ) {
+					case 39: //right
+						if( opr != 4){
+							opr = 1;
+						}
+						console.log('right');
+						break;
+					case 40: //down
+						if( opr != 3){
+							opr = 2;
+						}
+						console.log('down');
+						break;
+					case 38: //top
+						if( opr != 2){
+							opr = 3;
+						}
+						console.log('top');
+						break;
+					case 37: //left
+						if( opr != 1){
+							opr = 4;
+						}
+						console.log('left');
+						break;						
 		
-			time_min =  parseInt( $(classTimer).find('.timer-min').html() );
-			time_sec =  parseInt( $(classTimer).find('.timer-sec').html() );
-			time_ms =   parseInt( $(classTimer).find('.timer-ms').html() );
+				}
+
+			});
+			
+		SnakeLoop = setInterval(function(){	
 			
 			
-			if( time_sec == 60 ){
-				time_sec = 0;
-				time_min = time_min + 1;
-				
-			}	
-			if( time_ms == 100 ){
-				time_ms = 0;
-				time_sec = time_sec + 1;	
-							
-			}	
-		
-			time_ms = time_ms + 1;	
-			$(classTimer).find('.timer-min').html(time_min + "min" );
-			$(classTimer).find('.timer-sec').html(time_sec + "sec" );			
-			$(classTimer).find('.timer-ms').html(time_ms + "ms");
+			
+			
+			
+			
+			FootItenSel = snakeLengthAll - ( SnakeCount - 1 );
+			SnakeFoot = $('.snake-item[data-cnt="' + FootItenSel + '"]').removeClass('snake-item');	
+			snakeLengthAll++;
+			
+			switch(opr) {
+				case 1:
+					if( opr_old != 4){
+						if( y == SnakeCountFieldY ){
+							y = 1;						
+						}else{
+							y++;
+						}
+					}
 					
-		}, 10)
+					break;
+				case 2:
+					if( opr_old != 3){
+						if( x == SnakeCountFieldX ){
+							x = 1;						
+						}else{
+							x++;
+						}
+					}
+					
+					break;
+				case 3:
+					if( opr_old != 2){
+						
+						if( x == 1 ){
+							x = SnakeCountFieldX;						
+						}else{
+							x--;
+						} 
+					}
+		
+					break;
+				case 4:
+					if( opr_old != 1){
+						if( y == 1 ){
+							y = SnakeCountFieldY;						
+						}else{
+							y--;
+						}
+					}
+					
+					break;	
+				default:					 	
+					if( y == SnakeCountFieldY ){
+						y = 1;						
+					}else{
+						y++;
+					}	
+					opr = 1;
+					
+	
+			}
+			console.log( opr, opr_old);
+			SnakeSelector = $('.field-item.item-' + x +'-' + y + ' ');
+			
+			$('.field-item').removeClass('head');
+			var GameOver = SnakeSelector.hasClass( "snake-item" );
+			
+			var Food = SnakeSelector.hasClass( "snake-food" );
+			if( GameOver === true ){
+				clearInterval(SnakeLoop);
+				SnakeSelector.css('background', 'red');
+			}else{
+				if ( Food === true ){
+					SnakeCount++;
+					CreateFood();
+					SnakeSelector.addClass('snake-item head');	
+					SnakeSelector.attr('data-cnt', snakeLengthAll);
+					
+					
+					var score = $('.score').html();
+					score = parseInt(score) + 10;
+					$('.score').html(score);
+					
+				}else{
+					SnakeSelector.addClass('snake-item head');	
+					SnakeSelector.attr('data-cnt', snakeLengthAll);
+				}
+			}
+
+			opr_old	= opr;
+		}, speed);
 		
 
+		
+	}
+
+	function NewGame ( boxClass, gameSpeed ){
+		$('.score').html('0');
+		AddSnakeField( boxClass, SnakeCountFieldX,SnakeCountFieldY);	
+		CreateSnake(SnakeCount);
+		CreateFood();
+		SnakeStart(gameSpeed);		
 	}
 	
-
-	function timerStop(){
-		console.log(timerVal);
-		clearInterval(timerVal);
-	}
-	function timerClean(classTimer){
-		$(classTimer).html('');	
-	}
-		
-	$('.stop-game').on('click', function(){		
-		timerStop();
-	})
+	NewGame('.main-block', 100);
 	
 	$('.new-game').on('click', function(){
-
-		timerClean('.timer');
-		timer('.timer',1000);
-		newGame(6,5);
+		SnakeCount = 4;
+		SnakeCountFieldX = 20;
+		SnakeCountFieldY = 20;	
+		SnakeLoop;	
+		
+		NewGame('.main-block', 100);
 	})
+		
 	
 	
 });

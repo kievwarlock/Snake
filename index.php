@@ -13,20 +13,14 @@
   </head>
 
   <body>
-
+	<div class="main-block-nav">
+		<div class="score">0</div>
+		<div class="new-game">NEW GAME</div>
+	</div>
 	<div class="main-block">
-		<div class="game-navigation">
-			<div class="timer"></div>
-			<div class="button new-game">New game</div>
-			<!--
-			<div class="stop-game">STOP</div>
-			-->
-		</div>
-		<div class="game-container-block">
+
 			
-			
-			
-		</div>
+
 		
 	</div>
   
